@@ -1,1 +1,204 @@
-
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Токсично или нет?</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: #0a0d0f;
+    color: #e8ede8;
+    font-family: 'Inter', sans-serif;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem 1rem;
+    position: relative;
+    overflow-x: hidden;
+  }
+  .bg-grid {
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(0,255,120,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,255,120,0.04) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+    z-index: 0;
+  }
+  .content {
+    position: relative;
+    z-index: 1;
+    max-width: 640px;
+    width: 100%;
+    text-align: center;
+  }
+  .badge {
+    display: inline-block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    color: #00c864;
+    border: 1px solid #00c86440;
+    padding: 4px 14px;
+    border-radius: 2px;
+    margin-bottom: 2rem;
+    text-transform: uppercase;
+  }
+  h1 {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: clamp(2rem, 8vw, 4rem);
+    font-weight: 700;
+    line-height: 1.1;
+    margin-bottom: 0.5rem;
+    color: #ffffff;
+    letter-spacing: -0.02em;
+  }
+  h1 span.toxic { color: #ff4444; }
+  h1 span.safe { color: #00c864; }
+  .subtitle {
+    font-size: clamp(0.9rem, 3vw, 1.1rem);
+    color: #8a9a8a;
+    font-weight: 300;
+    margin-bottom: 3rem;
+    line-height: 1.6;
+  }
+  .ld50-card {
+    background: #111614;
+    border: 1px solid #1e2e1e;
+    border-radius: 4px;
+    padding: 1.5rem;
+    margin-bottom: 2.5rem;
+    text-align: left;
+    position: relative;
+    overflow: hidden;
+  }
+  .ld50-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, #00c864, #ff4444);
+  }
+  .ld50-row {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 0.5rem;
+  }
+  .ld50-bar-wrap {
+    flex: 1;
+    height: 6px;
+    background: #1e2e1e;
+    border-radius: 3px;
+    overflow: hidden;
+  }
+  .ld50-bar {
+    height: 100%;
+    border-radius: 3px;
+    width: 0;
+    transition: width 1.8s cubic-bezier(0.4,0,0.2,1);
+  }
+  .bar-danger { background: #ff4444; }
+  .bar-warning { background: #ffaa00; }
+  .bar-safe { background: #00c864; }
+  .ld50-name {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: #8a9a8a;
+    width: 80px;
+    flex-shrink: 0;
+  }
+  .ld50-val {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: #5a7a5a;
+    width: 60px;
+    text-align: right;
+    flex-shrink: 0;
+  }
+  .tagline {
+    font-size: 1rem;
+    color: #6a8a6a;
+    font-style: italic;
+    letter-spacing: 0.02em;
+    margin-bottom: 2.5rem;
+  }
+  .formula-strip {
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+    margin-top: 2.5rem;
+    opacity: 0.35;
+  }
+  .formula {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: #6aaa6a;
+    letter-spacing: 0.05em;
+  }
+  @media (max-width: 480px) {
+    .ld50-name { width: 60px; font-size: 10px; }
+    .ld50-val { width: 50px; font-size: 10px; }
+  }
+</style>
+</head>
+<body>
+<div class="bg-grid"></div>
+<div class="content">
+  <div class="badge">⬡ coming soon</div>
+  <h1>
+    <span class="toxic">Токсично</span><br>
+    или <span class="safe">нет?</span>
+  </h1>
+  <p class="subtitle">
+    Видишь химическую структуру — угадай:<br>
+    LD<sub>50</sub> меньше 1000 мг/кг или нет?
+  </p>
+  <div class="ld50-card">
+    <div class="ld50-row">
+      <div class="ld50-name">Рицин</div>
+      <div class="ld50-bar-wrap"><div class="ld50-bar bar-danger" data-w="98"></div></div>
+      <div class="ld50-val">0.02 мг</div>
+    </div>
+    <div class="ld50-row">
+      <div class="ld50-name">Кофеин</div>
+      <div class="ld50-bar-wrap"><div class="ld50-bar bar-warning" data-w="42"></div></div>
+      <div class="ld50-val">192 мг</div>
+    </div>
+    <div class="ld50-row">
+      <div class="ld50-name">Аспирин</div>
+      <div class="ld50-bar-wrap"><div class="ld50-bar bar-safe" data-w="18"></div></div>
+      <div class="ld50-val">1750 мг</div>
+    </div>
+    <div class="ld50-row">
+      <div class="ld50-name">NaCl</div>
+      <div class="ld50-bar-wrap"><div class="ld50-bar bar-safe" data-w="8"></div></div>
+      <div class="ld50-val">3000 мг</div>
+    </div>
+  </div>
+  <p class="tagline">"Доза делает яд" — Парацельс, 1538</p>
+  <div class="formula-strip">
+    <span class="formula">C₈H₁₀N₄O₂</span>
+    <span class="formula">C₉H₈O₄</span>
+    <span class="formula">C₂Cl₃F₃</span>
+    <span class="formula">C₁₂H₂₂O₁₁</span>
+    <span class="formula">NaHCO₃</span>
+  </div>
+</div>
+<script>
+  window.addEventListener('load', () => {
+    setTimeout(() => {
+      document.querySelectorAll('.ld50-bar[data-w]').forEach((bar, i) => {
+        setTimeout(() => { bar.style.width = bar.dataset.w + '%'; }, i * 200);
+      });
+    }, 400);
+  });
+</script>
+</body>
+</html>
